@@ -10,27 +10,39 @@ const Navbar = () => {
               <div className="col-sm-8 col-md-7 py-4">
                 <h4>About</h4>
                 <p className="text-body-secondary">
-                  Add some information about the album below, the author, or any
-                  other background context. Make it a few sentences long so
-                  folks can pick up some informative tidbits. Then, link them
-                  off to some social networking sites or contact information.
+                  With Album Manager, you can effortlessly browse through your
+                  collection, add new albums, update existing ones, and remove
+                  albums you no longer need. 🙋‍♂️Designed by Krishna Kant Singh
                 </p>
               </div>
               <div className="col-sm-4 offset-md-1 py-4">
                 <h4>Contact</h4>
                 <ul className="list-unstyled">
                   <li>
-                    <a href="/" className="text-white">
-                      Follow on Twitter
+                    <a
+                      href="https://www.linkedin.com/in/krishna-kant-singh-ab391a1b1/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-white"
+                    >
+                      LinkedIn
                     </a>
                   </li>
                   <li>
-                    <a href="/" className="text-white">
-                      Like on Facebook
+                    <a
+                      href="https://github.com/kabhinav577"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-white"
+                    >
+                      Github
                     </a>
                   </li>
                   <li>
-                    <a href="/" className="text-white">
+                    <a
+                      href="mailto:kabhinav577@gmail.com"
+                      className="text-white"
+                    >
                       Email me
                     </a>
                   </li>

@@ -4,6 +4,7 @@ import AlbumItem from '../AlbumItem/AlbumItem';
 const Album = () => {
   const [albums, setAlbums] = useState([]);
   const [newAlbumTitle, setNewAlbumTitle] = useState('');
+  const [editTitle, setEditTitle] = useState('');
 
   // Fetching Albums from API once when component is Rendered useEffect is Gone
   useEffect(() => {
@@ -29,6 +30,22 @@ const Album = () => {
       .catch((error) => console.error('Error fetching albums:', error));
   };
 
+  const editAlbum = (id) => {
+    fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ title: editTitle }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAlbums([data, ...albums]);
+        setEditTitle('');
+      })
+      .catch((error) => console.error('Error fetching albums:', error));
+  };
+
   const deleteAlbum = (id) => {
     // Dummy DELETE request (you won't be able to delete from the actual API)
     fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
@@ -46,8 +63,8 @@ const Album = () => {
       <section className="py-2 text-center container">
         <div className="row py-lg-2">
           <div className="col-lg-6 col-md-8 mx-auto">
-            <h1 className="fw-light">Album example</h1>
-            <p className="lead text-body-secondary">
+            <h1 className="fw-bold text-light">Album Manager</h1>
+            <p className="lead text-light">
               Something short and leading about the collection below—its
               contents, the creator, etc. Make it short and sweet, but not too
               short so folks don’t simply skip over it entirely.
@@ -64,7 +81,7 @@ const Album = () => {
                 />
               </div>
               <button
-                className="btn btn-outline-primary my-2 mx-2"
+                className="btn btn-primary my-2 mx-2 text-light"
                 onClick={addAlbum}
               >
                 Add Album
@@ -73,7 +90,11 @@ const Album = () => {
           </div>
         </div>
       </section>
-      <AlbumItem albums={albums} deleteAlbum={deleteAlbum} />
+      <AlbumItem
+        albums={albums}
+        deleteAlbum={deleteAlbum}
+        editAlbum={editAlbum}
+      />
     </div>
   );
 };
