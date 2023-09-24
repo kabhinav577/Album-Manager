@@ -5,57 +5,113 @@ const Album = () => {
   const [albums, setAlbums] = useState([]);
   const [newAlbumTitle, setNewAlbumTitle] = useState('');
   const [editTitle, setEditTitle] = useState('');
+  const [editAlbumId, setEditAlbumId] = useState(null);
 
   // Fetching Albums from API once when component is Rendered useEffect is Gone
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/albums')
-      .then((response) => response.json())
-      .then((data) => setAlbums(data))
-      .catch((error) => console.error('Error fetching albums:', error));
+    const fetchAlbums = async () => {
+      try {
+        const response = await fetch(
+          'https://jsonplaceholder.typicode.com/albums'
+        );
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setAlbums(data);
+      } catch (error) {
+        console.error('Error fetching albums:', error);
+      }
+    };
+
+    fetchAlbums();
   }, []);
 
-  const addAlbum = () => {
-    fetch('https://jsonplaceholder.typicode.com/albums', {
-      method: 'POST',
-      body: JSON.stringify({ title: newAlbumTitle }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setAlbums([data, ...albums]);
-        setNewAlbumTitle('');
-      })
-      .catch((error) => console.error('Error fetching albums:', error));
+  const addAlbum = async () => {
+    try {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/albums',
+        {
+          method: 'POST',
+          body: JSON.stringify({ title: newAlbumTitle }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      // Update albums state by spreading the new album data into the array
+      setAlbums([data, ...albums]);
+      // Clear the newAlbumTitle
+      setNewAlbumTitle('');
+    } catch (error) {
+      console.error('Error fetching albums:', error);
+    }
   };
 
-  const editAlbum = (id) => {
-    fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ title: editTitle }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setAlbums([data, ...albums]);
-        setEditTitle('');
-      })
-      .catch((error) => console.error('Error fetching albums:', error));
+  const editAlbum = async (editAlbumId) => {
+    if (editAlbumId === null || editTitle === '') {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/albums/${editAlbumId}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({ title: editTitle }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      // Update the title of the edited album
+      const updatedAlbums = albums.map((album) =>
+        album.id === editAlbumId ? { ...album, title: data.title } : album
+      );
+
+      setAlbums(updatedAlbums);
+      setEditTitle('');
+      setEditAlbumId(null);
+    } catch (error) {
+      console.error('Error fetching albums:', error);
+    }
   };
 
-  const deleteAlbum = (id) => {
+  const deleteAlbum = async (id) => {
     // Dummy DELETE request (you won't be able to delete from the actual API)
-    fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        const updatedAlbums = albums.filter((album) => album.id !== id);
-        setAlbums(updatedAlbums);
-      })
-      .catch((error) => console.error('Error deleting album:', error));
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/albums/${id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // Filter out the deleted album from the albums state
+      const updatedAlbums = albums.filter((album) => album.id !== id);
+
+      setAlbums(updatedAlbums);
+    } catch (error) {
+      console.error('Error deleting album:', error);
+    }
   };
 
   return (
@@ -70,7 +126,7 @@ const Album = () => {
               short so folks don’t simply skip over it entirely.
             </p>
             <p className="d-flex justify-content-center align-items-center">
-              <div>
+              <span>
                 <input
                   type="text"
                   id="typeText"
@@ -79,7 +135,7 @@ const Album = () => {
                   value={newAlbumTitle}
                   onChange={(e) => setNewAlbumTitle(e.target.value)}
                 />
-              </div>
+              </span>
               <button
                 className="btn btn-primary my-2 mx-2 text-light"
                 onClick={addAlbum}
@@ -90,11 +146,23 @@ const Album = () => {
           </div>
         </div>
       </section>
-      <AlbumItem
-        albums={albums}
-        deleteAlbum={deleteAlbum}
-        editAlbum={editAlbum}
-      />
+      <div className="container">
+        <div className="row">
+          {albums.map((album) => (
+            <AlbumItem
+              key={album.id}
+              id={album.id}
+              editAlbum={editAlbum}
+              deleteAlbum={deleteAlbum}
+              title={album.title}
+              editTitle={editTitle} // Pass the editTitle state
+              setEditTitle={setEditTitle} // Pass the setEditTitle function
+              editAlbumId={editAlbumId} // Pass the editAlbumId state
+              setEditAlbumId={setEditAlbumId} // Pass the setEditAlbumId function
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

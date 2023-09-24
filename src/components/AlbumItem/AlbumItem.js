@@ -1,83 +1,97 @@
 import React from 'react';
 import './AlbumItem.css';
 
-const AlbumItem = ({ albums, deleteAlbum, editAlbum }) => {
+const AlbumItem = ({
+  id,
+  deleteAlbum,
+  editAlbum,
+  title,
+  editTitle,
+  setEditTitle,
+  editAlbumId,
+  setEditAlbumId,
+}) => {
+  // Function run when edit button clicked
+  const handleClick = () => {
+    // Set the editAlbumId to the current album ID
+    setEditAlbumId(id);
+    // Set the editTitle to the current album's title
+    setEditTitle(title);
+  };
   return (
     <>
-      <div class="container">
-        <div class="row">
-          {albums.map((album) => (
-            <>
-              <div class="col-md-6 col-lg-4 col-sm-12 my-2">
-                <div class="card card-inverse card-info text-center">
-                  <div class="card-block p-2">
-                    <h5 class="card-title fw-semibold text-start text-light">
-                      {album.title.slice(0, 32)}
-                    </h5>
-                    <div className="d-flex justify-content-start align-items-center py-2">
-                      <button
-                        type="button"
-                        className="btn btn-outline-warning rounded-circle me-2 text-light"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                      >
-                        <i className="fa-regular fa-pen-to-square"></i>
-                      </button>
-                      <button
-                        className="btn btn-outline-danger rounded-circle"
-                        onClick={() => deleteAlbum(album.id)}
-                      >
-                        <i className="fa-solid fa-trash-can"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="modal fade"
-                id="exampleModal"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
+      <div className="col-md-6 col-lg-4 col-sm-12 my-2">
+        <div className="card card-inverse card-info text-center">
+          <div className="card-block p-2">
+            <h5 className="card-title fw-semibold text-start text-light">
+              {title.slice(0, 32)}
+            </h5>
+            <div className="d-flex justify-content-start align-items-center py-2">
+              <button
+                type="button"
+                className="btn btn-outline-warning rounded-circle me-2 text-light"
+                data-bs-toggle="modal"
+                data-bs-target={`#exampleModal${id}`}
+                onClick={handleClick}
               >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Edit title
-                      </h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      <form class="">
-                        <div class="form-floating mb-3">
-                          <input
-                            type="text"
-                            class="form-control rounded-3"
-                            id="floatingInput"
-                            placeholder="Edit title"
-                          />
-                          <label for="floatingInput">Edit Title</label>
-                        </div>
-                        <button
-                          class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
-                          type="submit"
-                          onClick={() => editAlbum(album.id)}
-                        >
-                          Edit title
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
+                <i className="fa-regular fa-pen-to-square"></i>
+              </button>
+              <button
+                className="btn btn-outline-danger rounded-circle"
+                onClick={() => deleteAlbum(id)}
+              >
+                <i className="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal Tab  */}
+
+      <div
+        className="modal fade"
+        id={`exampleModal${id}`}
+        tabIndex="-1"
+        aria-labelledby={`#exampleModalLabel${id}`}
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id={`exampleModalLabel${id}`}>
+                Edit title
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div className="form-floating mb-3">
+                <input
+                  type="text"
+                  className="form-control rounded-3"
+                  id="floatingInput"
+                  placeholder="Edit title"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                />
+                <label htmlFor="floatingInput">Edit Title</label>
               </div>
-            </>
-          ))}
+              <button
+                className="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+                type="button"
+                onClick={() => editAlbum(id)}
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                Edit title
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>
