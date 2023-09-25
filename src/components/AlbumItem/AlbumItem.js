@@ -81,14 +81,23 @@ const AlbumItem = ({
                 />
                 <label htmlFor="floatingInput">Edit Title</label>
               </div>
+            </div>
+            <div class="modal-footer">
               <button
-                className="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
                 type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
                 onClick={() => editAlbum(id)}
                 data-bs-dismiss="modal"
                 aria-label="Close"
               >
-                Edit title
+                Save new Title
               </button>
             </div>
           </div>

@@ -121,9 +121,8 @@ const Album = () => {
           <div className="col-lg-6 col-md-8 mx-auto">
             <h1 className="fw-bold text-light">Album Manager</h1>
             <p className="lead text-light">
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don’t simply skip over it entirely.
+              Photo album managers allow users to categorize and organize their
+              photos into albums or folders.
             </p>
             <p className="d-flex justify-content-center align-items-center">
               <span>
