@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Album-Manager/static/css/main.124c55e9.css",
+    "main.js": "/Album-Manager/static/js/main.56fa2e86.js",
+    "index.html": "/Album-Manager/index.html",
+    "main.124c55e9.css.map": "/Album-Manager/static/css/main.124c55e9.css.map",
+    "main.56fa2e86.js.map": "/Album-Manager/static/js/main.56fa2e86.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.124c55e9.css",
+    "static/js/main.56fa2e86.js"
+  ]
+}
